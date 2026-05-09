@@ -119,3 +119,43 @@
     }
   }
 }
+
+// Reviews
+.review-card {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+
+  .stars {
+    color: #f4c542;
+    font-size: 1.1rem;
+  }
+
+  .review-meta {
+    font-size: 0.8rem;
+    color: #aaa;
+  }
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  label {
+    font-size: 1.8rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  input:checked ~ label,
+  label:hover,
+  label:hover ~ label {
+    color: #f4c542;
+  }
+}

@@ -6,7 +6,7 @@
 </div>
 
 <div class="container mb-5">
-  <div class="row">
+  <div class="row mb-5">
 
     <%# Columna izquierda: películas %>
     <div class="col-md-8">
@@ -40,7 +40,7 @@
       <% end %>
     </div>
 
-    <%# Columna derecha: formulario %>
+    <%# Columna derecha: formulario bookmark %>
     <div class="col-md-4">
       <div class="card shadow-sm p-3">
         <h5 class="mb-3">Add a movie</h5>
@@ -48,6 +48,59 @@
           <%= f.association :movie, collection: @movies, label_method: :title, value_method: :id, prompt: "Select a movie" %>
           <%= f.input :comment, placeholder: "Why do you recommend it?" %>
           <%= f.submit "Add to list", class: "btn btn-success w-100" %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="my-5">
+
+  <%# Sección de reviews %>
+  <div class="row">
+
+    <%# Reviews existentes %>
+    <div class="col-md-7">
+      <h4 class="mb-4">Reviews</h4>
+      <% if @reviews.empty? %>
+        <p class="text-muted">No reviews yet. Be the first!</p>
+      <% else %>
+        <% @reviews.each do |review| %>
+          <div class="review-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <span class="stars"><%= render "reviews/stars", rating: review.rating %></span>
+                <span class="review-meta ms-2"><%= time_ago_in_words(review.created_at) %> ago</span>
+                <p class="mt-2 mb-0"><%= review.comment %></p>
+              </div>
+              <%= link_to "delete",
+                    list_review_path(@list, review),
+                    data: { turbo_method: :delete, turbo_confirm: "Delete this review?" },
+                    class: "delete-link ms-3" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Formulario de nueva review %>
+    <div class="col-md-4 offset-md-1">
+      <div class="card shadow-sm p-3">
+        <h5 class="mb-3">Add your review</h5>
+        <%= simple_form_for [@list, @review] do |f| %>
+          <%= f.input :comment, label: "Comment", placeholder: "Add your review here..." %>
+
+          <div class="mb-3">
+            <label class="form-label">Rating</label>
+            <div class="star-rating">
+              <% 5.downto(1) do |i| %>
+                <%= f.radio_button :rating, i, id: "rating_#{i}" %>
+                <label for="rating_<%= i %>">★</label>
+              <% end %>
+            </div>
+          </div>
+
+          <%= f.submit "Create Review", class: "btn btn-success w-100" %>
         <% end %>
       </div>
     </div>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "reviews/create"
+  get "reviews/destroy"
   get "bookmarks/new"
   get "bookmarks/create"
   get "bookmarks/destroy"
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
   # root "posts#index"
   resources :lists, only: [:index, :show, :new, :create] do
     resources :bookmarks, only: [:create]
+    resources :reviews, only: [:create, :destroy]
   end
 
   resources :bookmarks, only: [:destroy]
