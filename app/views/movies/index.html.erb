@@ -16,8 +16,99 @@
             <p class="text-muted small">⭐ <%= movie.rating %></p>
             <p class="text-muted small"><%= movie.overview.truncate(80) %></p>
           </div>
+          <div class="card-footer bg-white border-0">
+            <button
+              class="btn btn-outline-success btn-sm w-100"
+              onclick="togglePanel(<%= movie.id %>)"
+            >
+              ＋ Add to list
+            </button>
+            <%= render "movies/add_to_list", movie: movie %>
+          </div>
         </div>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  // Mostrar/ocultar panel
+  function togglePanel(movieId) {
+    const panel = document.getElementById(`panel-${movieId}`);
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+  }
+
+  // Submit del formulario con list_id correcto en la action
+  function submitAddToList(movieId, isSimpleSelect) {
+    const form = document.getElementById(`form-${movieId}`);
+    let listId;
+
+    if (isSimpleSelect) {
+      listId = document.getElementById(`list-select-${movieId}`).value;
+    } else {
+      listId = document.getElementById(`list-id-${movieId}`).value;
+    }
+
+    if (!listId) {
+      alert("Please select a list first.");
+      return;
+    }
+
+    form.action = `/lists/${listId}/bookmarks`;
+    form.submit();
+  }
+
+  // AJAX search de listas (caso B)
+  document.addEventListener("turbo:load", function () {
+    document.querySelectorAll(".list-search-input").forEach(function (input) {
+      const movieId = input.dataset.movie;
+      const resultsBox = document.getElementById(`list-results-${movieId}`);
+      const listIdField = document.getElementById(`list-id-${movieId}`);
+      const selectedName = document.getElementById(`list-selected-name-${movieId}`);
+
+      input.addEventListener("input", function () {
+        const query = this.value.trim();
+
+        if (query.length < 2) {
+          resultsBox.style.display = "none";
+          resultsBox.innerHTML = "";
+          return;
+        }
+
+        fetch(`/lists/search?query=${encodeURIComponent(query)}`)
+          .then(r => r.json())
+          .then(lists => {
+            resultsBox.innerHTML = "";
+
+            if (lists.length === 0) {
+              resultsBox.innerHTML = `<div class="list-group-item text-muted small">No lists found</div>`;
+              resultsBox.style.display = "block";
+              return;
+            }
+
+            lists.forEach(list => {
+              const item = document.createElement("button");
+              item.type = "button";
+              item.className = "list-group-item list-group-item-action small";
+              item.textContent = list.name;
+              item.addEventListener("click", function () {
+                listIdField.value = list.id;
+                input.value = list.name;
+                selectedName.textContent = `Selected: ${list.name}`;
+                resultsBox.style.display = "none";
+              });
+              resultsBox.appendChild(item);
+            });
+
+            resultsBox.style.display = "block";
+          });
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!input.contains(e.target) && !resultsBox.contains(e.target)) {
+          resultsBox.style.display = "none";
+        }
+      });
+    });
+  });
+</script>

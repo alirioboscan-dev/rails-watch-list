@@ -7,12 +7,19 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :movies, only: [:index, :new, :create]
+  resources :movies, only: [:index, :new, :create] do
+    collection do
+      get :search
+    end
+  end
 
   resources :lists, only: [:index, :show, :new, :create, :edit, :update] do
+    collection do
+      get :search
+    end
     resources :bookmarks, only: [:create]
     resources :reviews, only: [:create, :destroy]
-  end
+end
 
   resources :bookmarks, only: [:destroy]
 end

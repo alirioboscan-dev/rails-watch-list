@@ -16,12 +16,19 @@ class ListsController < ApplicationController
   end
 
   def create
-    @list = List.new(list_params)
-    if @list.save
-      redirect_to lists_path, notice: "List created successfully!"
-    else
-      render :new, status: :unprocessable_entity
+  @list = List.new(list_params)
+  if @list.save
+    if params[:movie_id].present?
+      Bookmark.create(list: @list, movie_id: params[:movie_id], comment: "Added from Movies")
     end
+    redirect_to list_path(@list), notice: "List created successfully!"
+  else
+    render :new, status: :unprocessable_entity
+  end
+
+  def search
+  @lists = List.where("name ILIKE ?", "%#{params[:query]}%").limit(8)
+  render json: @lists.map { |l| { id: l.id, name: l.name } }
   end
 
   def edit
@@ -35,6 +42,7 @@ class ListsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
   end
 
   private

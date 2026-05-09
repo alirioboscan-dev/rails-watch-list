@@ -1,0 +1,51 @@
+<div class="add-to-list-panel mt-2" id="panel-<%= movie.id %>" style="display:none;">
+  <% if @lists.empty? %>
+    <%# CASO C: no hay listas %>
+    <p class="text-muted small mb-2">You have no lists yet.</p>
+    <%= link_to "＋ Create a list", new_list_path(movie_id: movie.id), class: "btn btn-success btn-sm w-100" %>
+  <% else %>
+    <%# CASOS A y B: hay listas %>
+    <form id="form-<%= movie.id %>" method="post" action="/lists/1/bookmarks">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="bookmark[movie_id]" value="<%= movie.id %>">
+      <input type="hidden" name="bookmark[comment]" value="Added from Movies">
+
+      <% if @lists.count <= 3 %>
+        <%# CASO A: dropdown simple %>
+        <select name="list_select" class="form-select form-select-sm mb-2" id="list-select-<%= movie.id %>">
+          <option value="">Select a list...</option>
+          <% @lists.each do |list| %>
+            <option value="<%= list.id %>"><%= list.name %></option>
+          <% end %>
+        </select>
+      <% else %>
+        <%# CASO B: AJAX search %>
+        <div class="position-relative mb-2">
+          <input
+            type="text"
+            class="form-control form-control-sm list-search-input"
+            id="list-search-<%= movie.id %>"
+            placeholder="Search a list..."
+            autocomplete="off"
+            data-movie="<%= movie.id %>"
+          >
+          <div
+            class="list-group list-search-results"
+            id="list-results-<%= movie.id %>"
+            style="display:none; position:absolute; z-index:200; width:100%;"
+          ></div>
+        </div>
+        <input type="hidden" id="list-id-<%= movie.id %>">
+        <p class="small text-muted" id="list-selected-name-<%= movie.id %>">No list selected</p>
+      <% end %>
+
+      <button
+        type="button"
+        class="btn btn-success btn-sm w-100"
+        onclick="submitAddToList(<%= movie.id %>, <%= @lists.count <= 3 %>)"
+      >
+        Add to list
+      </button>
+    </form>
+  <% end %>
+</div>

@@ -3,9 +3,10 @@
     <div class="col-md-6">
       <h1 class="mb-4">Create a new list</h1>
 
-        <%= simple_form_for @list do |f| %>
+      <%= simple_form_for @list do |f| %>
         <%= f.input :name, placeholder: "e.g. Drama, Classics...", required: false %>
-        <%= f.input :image_url, label: "Cover image URL", placeholder: "https://..." %>
+        <%= f.input :image_url, label: "Cover image URL", placeholder: "https://...", required: false %>
+        <%= hidden_field_tag :movie_id, params[:movie_id] %>
         <%= f.submit "Create List", class: "btn btn-success" %>
       <% end %>
 
