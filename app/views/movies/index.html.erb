@@ -1,0 +1,23 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>All Movies</h1>
+    <%= link_to "Add a movie", new_movie_path, class: "btn btn-success" %>
+  </div>
+
+  <div class="row g-4">
+    <% @movies.each do |movie| %>
+      <div class="col-md-3">
+        <div class="card movie-card h-100">
+          <% if movie.poster_url.present? %>
+            <img src="<%= movie.poster_url %>" alt="<%= movie.title %>">
+          <% end %>
+          <div class="card-body">
+            <h6 class="card-title"><%= movie.title %></h6>
+            <p class="text-muted small">⭐ <%= movie.rating %></p>
+            <p class="text-muted small"><%= movie.overview.truncate(80) %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
