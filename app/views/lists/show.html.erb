@@ -38,10 +38,16 @@
                     <p class="movie-comment"><%= bookmark.comment %></p>
                   <% end %>
                 </div>
-                <div class="card-footer bg-white border-0 text-end">
+                <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+                  <%= link_to toggle_watched_bookmark_path(bookmark),
+                  data: { turbo_method: :patch },
+                  class: "btn btn-sm #{bookmark.watched ? 'btn-success' : 'btn-outline-secondary'}" do %>
+                  <%= bookmark.watched ? "✅ Watched!" : "○ Mark as watched" %>
+                  <% end %>
+
                   <%= link_to "delete", bookmark_path(bookmark),
-                        data: { turbo_method: :delete, turbo_confirm: "Remove this movie?" },
-                        class: "delete-link" %>
+                  data: { turbo_method: :delete, turbo_confirm: "Remove this movie?" },
+                  class: "delete-link" %>
                 </div>
               </div>
             </div>

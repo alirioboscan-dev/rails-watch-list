@@ -122,6 +122,18 @@
       text-decoration: underline;
     }
   }
+
+  .card-footer {
+
+    .btn-success {
+    font-size: 0.8rem;
+    }
+  .btn-outline-secondary {
+    font-size: 0.8rem;
+    color: #aaa;
+    border-color: #ddd;
+  }
+}
 }
 
 // Reviews

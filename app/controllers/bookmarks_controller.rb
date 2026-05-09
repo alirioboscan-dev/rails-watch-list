@@ -18,6 +18,12 @@ class BookmarksController < ApplicationController
     redirect_to list_path(@list), notice: "Bookmark removed."
   end
 
+  def toggle_watched
+    @bookmark = Bookmark.find(params[:id])
+    @bookmark.update(watched: !@bookmark.watched)
+    redirect_to list_path(@bookmark.list)
+  end
+
   private
 
   def bookmark_params

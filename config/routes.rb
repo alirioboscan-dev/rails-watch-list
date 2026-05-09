@@ -19,7 +19,11 @@ Rails.application.routes.draw do
     end
     resources :bookmarks, only: [:create]
     resources :reviews, only: [:create, :destroy]
-end
+  end
 
-  resources :bookmarks, only: [:destroy]
+  resources :bookmarks, only: [:destroy] do
+    member do
+      patch :toggle_watched
+    end
+  end
 end
