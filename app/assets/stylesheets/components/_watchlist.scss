@@ -1,0 +1,121 @@
+// Navbar
+.navbar {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  .navbar-brand {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+}
+
+// Hero banner
+.hero {
+  position: relative;
+  height: 360px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 2rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.1));
+  }
+
+  .hero-content {
+    position: relative;
+    color: white;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      margin: 0;
+    }
+  }
+}
+
+// List cards en el index
+.list-card {
+  position: relative;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    border-radius: 12px;
+  }
+
+  .list-card-title {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+// Movie cards en el show
+.movie-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  img {
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .movie-comment {
+    font-style: italic;
+    color: #555;
+    font-size: 0.9rem;
+
+    &::before {
+      content: "\201C";
+      font-size: 1.5rem;
+      color: #aaa;
+      line-height: 0;
+      vertical-align: -0.4rem;
+      margin-right: 2px;
+    }
+  }
+
+  .delete-link {
+    font-size: 0.85rem;
+    color: #dc3545;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
