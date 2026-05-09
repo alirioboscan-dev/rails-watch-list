@@ -6,36 +6,51 @@
 </div>
 
 <div class="container mb-5">
-  <div class="d-flex justify-content-end mb-4">
-    <%= link_to "Add a movie", new_list_bookmark_path(@list), class: "btn btn-success" %>
-  </div>
+  <div class="row">
 
-  <% if @list.bookmarks.empty? %>
-    <p class="text-muted">No movies in this list yet. Add your first one!</p>
-  <% else %>
-    <div class="row g-4">
-      <% @list.bookmarks.each do |bookmark| %>
-        <div class="col-md-4">
-          <div class="card movie-card h-100">
-            <img src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>">
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= bookmark.movie.title %>
-                <span class="text-muted fs-6">· <%= bookmark.movie.rating %> ⭐</span>
-              </h5>
-              <p class="text-muted small"><%= bookmark.movie.overview.truncate(100) %></p>
-              <% if bookmark.comment.present? %>
-                <p class="movie-comment"><%= bookmark.comment %></p>
-              <% end %>
+    <%# Columna izquierda: películas %>
+    <div class="col-md-8">
+      <% if @list.bookmarks.empty? %>
+        <p class="text-muted">No movies in this list yet. Add your first one!</p>
+      <% else %>
+        <div class="row g-4">
+          <% @list.bookmarks.each do |bookmark| %>
+            <div class="col-md-6">
+              <div class="card movie-card h-100">
+                <img src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= bookmark.movie.title %>
+                    <span class="text-muted fs-6">· <%= bookmark.movie.rating %> ⭐</span>
+                  </h5>
+                  <p class="text-muted small"><%= bookmark.movie.overview.truncate(100) %></p>
+                  <% if bookmark.comment.present? %>
+                    <p class="movie-comment"><%= bookmark.comment %></p>
+                  <% end %>
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                  <%= link_to "delete", bookmark_path(bookmark),
+                        data: { turbo_method: :delete, turbo_confirm: "Remove this movie?" },
+                        class: "delete-link" %>
+                </div>
+              </div>
             </div>
-            <div class="card-footer bg-white border-0 text-end">
-              <%= link_to "delete", bookmark_path(bookmark),
-                    data: { turbo_method: :delete, turbo_confirm: "Remove this movie?" },
-                    class: "delete-link" %>
-            </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
     </div>
-  <% end %>
+
+    <%# Columna derecha: formulario %>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5 class="mb-3">Add a movie</h5>
+        <%= simple_form_for [@list, @bookmark] do |f| %>
+          <%= f.association :movie, collection: @movies, label_method: :title, value_method: :id, prompt: "Select a movie" %>
+          <%= f.input :comment, placeholder: "Why do you recommend it?" %>
+          <%= f.submit "Add to list", class: "btn btn-success w-100" %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
 </div>
