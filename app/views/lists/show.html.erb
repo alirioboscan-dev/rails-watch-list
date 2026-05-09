@@ -1,0 +1,22 @@
+<div class="container my-5">
+  <h1 class="mb-4"><%= @list.name %></h1>
+
+  <% if @list.bookmarks.empty? %>
+    <p class="text-muted">No movies in this list yet.</p>
+  <% else %>
+    <div class="row g-4">
+      <% @list.bookmarks.each do |bookmark| %>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <img src="<%= bookmark.movie.poster_url %>" class="card-img-top" alt="<%= bookmark.movie.title %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= bookmark.movie.title %></h5>
+              <p class="text-muted">⭐ <%= bookmark.movie.rating %></p>
+              <p><em><%= bookmark.comment %></em></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
