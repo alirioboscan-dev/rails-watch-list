@@ -40,6 +40,15 @@
       opacity: 0.85;
       margin: 0;
     }
+
+    #share-btn {
+      white-space: nowrap;
+      opacity: 0.9;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }
 

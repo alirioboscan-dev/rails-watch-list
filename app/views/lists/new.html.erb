@@ -3,8 +3,9 @@
     <div class="col-md-6">
       <h1 class="mb-4">Create a new list</h1>
 
-      <%= simple_form_for @list do |f| %>
-        <%= f.input :name, label: "List name", placeholder: "e.g. Drama, Classics..." %>
+        <%= simple_form_for @list do |f| %>
+        <%= f.input :name, placeholder: "e.g. Drama, Classics..." %>
+        <%= f.input :image_url, label: "Cover image URL", placeholder: "https://..." %>
         <%= f.submit "Create List", class: "btn btn-success" %>
       <% end %>
     </div>
