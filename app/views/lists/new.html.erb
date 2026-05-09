@@ -8,6 +8,8 @@
         <%= f.input :image_url, label: "Cover image URL", placeholder: "https://..." %>
         <%= f.submit "Create List", class: "btn btn-success" %>
       <% end %>
+
+      <%= link_to "← Back to lists", lists_path, class: "btn btn-link mt-2" %>
     </div>
   </div>
 </div>
